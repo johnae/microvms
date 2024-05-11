@@ -28,14 +28,18 @@
     # in
     #   config.microvm.runner.${hypervisor};
 
-    nixosConfigurations = builtins.listToAttrs (map (
-        name: {
+    nixosConfigurations = builtins.listToAttrs (lib.imap1 (
+        id: name: {
           inherit name;
           value = nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
               microvm.nixosModules.microvm
-              ({pkgs, ...}: {
+              ({
+                pkgs,
+                lib,
+                ...
+              }: {
                 networking.hostName = "my-microvm";
                 networking.firewall.allowedUDPPorts = [67];
                 systemd.network.enable = true;
@@ -99,7 +103,7 @@
                     {
                       type = "tap";
                       id = "vm-1";
-                      mac = "02:00:00:00:00:01";
+                      mac = "02:00:00:00:00:${lib.fixedWidthString 2 "0" (toString id)}";
                     }
                   ];
                 };
