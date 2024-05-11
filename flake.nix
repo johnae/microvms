@@ -40,7 +40,7 @@
                 lib,
                 ...
               }: {
-                networking.hostName = "my-microvm";
+                networking.hostName = name;
                 networking.firewall.allowedUDPPorts = [67];
                 systemd.network.enable = true;
                 systemd.network.networks."10-lan" = {
@@ -102,7 +102,7 @@
                   interfaces = [
                     {
                       type = "tap";
-                      id = "vm-1";
+                      id = "vm-${toString id}";
                       mac = "02:00:00:00:00:${lib.fixedWidthString 2 "0" (toString id)}";
                     }
                   ];
