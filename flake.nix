@@ -28,7 +28,7 @@
     # in
     #   config.microvm.runner.${hypervisor};
 
-    nixosConfigurations = builtins.listToAttrs (lib.imap1 (
+    nixosConfigurations = builtins.listToAttrs (nixpkgs.lib.imap1 (
         id: name: {
           inherit name;
           value = nixpkgs.lib.nixosSystem {
